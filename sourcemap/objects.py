@@ -16,7 +16,7 @@ class Token(object):
         Source column number: src_col
         Name of the token: name
     """
-    def __init__(self, dst_line, dst_col, src, src_line, src_col, name):
+    def __init__(self, dst_line=0, dst_col=0, src='', src_line=0, src_col=0, name=None):
         self.dst_line = dst_line
         self.dst_col = dst_col
         self.src = src
@@ -46,11 +46,11 @@ class SourceMapIndex(object):
     """The indexed sourcemap containing all the Tokens
     and precomputed indexes for searching."""
 
-    def __init__(self, tokens, line_index, index, sources):
+    def __init__(self, tokens, line_index, index, sources=None):
         self.tokens = tokens
         self.line_index = line_index
         self.index = index
-        self.sources = sources
+        self.sources = sources or []
 
     def lookup(self, line, column):
         try:
