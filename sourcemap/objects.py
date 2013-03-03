@@ -1,6 +1,9 @@
 """
 sourcemap.objects
-=================
+~~~~~~~~~~~~~~~~~
+
+:copyright: (c) 2013 by Matt Robenolt
+:license: BSD, see LICENSE for more details.
 """
 from bisect import bisect_right
 

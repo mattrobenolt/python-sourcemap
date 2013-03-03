@@ -1,19 +1,24 @@
 """
 sourcemap
-=========
-"""
+~~~~~~~~~
 
-from .exceptions import SourceMapDecodeError
+:copyright: (c) 2013 by Matt Robenolt
+:license: BSD, see LICENSE for more details.
+"""
+from .exceptions import SourceMapDecodeError  #NOQA
 from .decoder import SourceMapDecoder
+
 
 def load(fp, cls=None):
     "Parse a sourcemap from a file-like object"
     return loads(fp.read(), cls)
 
+
 def loads(source, cls=None):
     "Parse a sourcemap from a string"
     cls = cls or SourceMapDecoder
     return cls().decode(source)
+
 
 def discover(source):
     "Given a JavaScript file, find the sourceMappingURL line"

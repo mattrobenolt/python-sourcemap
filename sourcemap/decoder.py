@@ -1,8 +1,15 @@
 """
 sourcemap.decoder
-=================
-"""
+~~~~~~~~~~~~~~~~~
 
+Includes source from:
+    https://github.com/martine/python-sourcemap
+Original source under Apache license, see:
+    https://github.com/martine/python-sourcemap/blob/master/COPYING
+
+:copyright: (c) 2013 by Matt Robenolt
+:license: BSD, see LICENSE for more details.
+"""
 import os
 from functools import partial
 from .exceptions import SourceMapDecodeError
@@ -10,7 +17,7 @@ from .objects import Token, SourceMapIndex
 try:
     import simplejson as json
 except ImportError:
-    import json
+    import json  #NOQA
 
 __all__ = ('SourceMapDecoder')
 

@@ -1,5 +1,4 @@
 import unittest
-import sourcemap
 from sourcemap.objects import Token, SourceMapIndex
 
 
