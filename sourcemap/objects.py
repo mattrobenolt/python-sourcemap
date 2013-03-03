@@ -6,6 +6,16 @@ from bisect import bisect_right
 from collections import namedtuple
 
 class Token(object):
+    """A Token represents one JavaScript symbol.
+
+    Each token holds a reference to:
+        Original line number: dst_line
+        Original column number: dst_col
+        Source file name: src
+        Source line number: src_line
+        Source column number: src_col
+        Name of the token: name
+    """
     def __init__(self, dst_line, dst_col, src, src_line, src_col, name):
         self.dst_line = dst_line
         self.dst_col = dst_col
