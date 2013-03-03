@@ -9,10 +9,8 @@ from .exceptions import SourceMapDecodeError
 from .objects import Token, SourceMapIndex
 try:
     import simplejson as json
-    key_type = str
 except ImportError:
     import json
-    key_type = unicode
 
 
 __all__ = ('SourceMapDecoder')
@@ -34,7 +32,7 @@ class SourceMapDecoder(object):
 
         cur, shift = 0, 0
         for c in segment:
-            val = B64[c]
+            val = B64[ord(c)]
             # Each character is 6 bits:
             # 5 of value and the high bit is the continuation.
             val, cont = val & 0b11111, val >> 5
@@ -111,11 +109,12 @@ class SourceMapDecoder(object):
         if sourceRoot is not None:
             sources = map(partial(os.path.join, sourceRoot), sources)
 
+        # List of all tokens
         tokens = []
 
         # preallocate 2D array for indexing
         # line_index is used to identify the closest column when looking up a token
-        line_index = [None] * len(lines)
+        line_index = []
 
         # Main index of all tokens
         # The index is keyed on (line, column)
@@ -123,7 +122,7 @@ class SourceMapDecoder(object):
 
         dst_col, src_id, src_line, src_col, name_id = 0, 0, 0, 0, 0
         for dst_line, line in enumerate(lines):
-            line_index[dst_line] = []
+            line_index.append([])
 
             segments = line.split(',')
             dst_col = 0
@@ -145,6 +144,7 @@ class SourceMapDecoder(object):
                         name_id += parse[4]
                         name = names[name_id]
 
+                # lol for now
                 try:
                     assert dst_line >= 0
                     assert dst_col >= 0
@@ -166,7 +166,7 @@ class SourceMapDecoder(object):
 
 
 # Mapping of base64 letter -> integer value.
-B64 = dict(
-    (c, i) for i, c in
-    enumerate(key_type('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'))
-)
+# This weird list is being allocated for faster lookups
+B64 = [None] * 123
+for i, c in enumerate('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'):
+    B64[ord(c)] = i
