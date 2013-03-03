@@ -7,8 +7,10 @@ from .exceptions import SourceMapDecodeError
 from .objects import Token, SourceMapIndex
 try:
     import simplejson as json
+    key_type = str
 except ImportError:
     import json
+    key_type = unicode
 
 
 __all__ = ('SourceMapDecoder')
@@ -161,9 +163,8 @@ class SourceMapDecoder(object):
         return SourceMapIndex(tokens, line_index, index, sources)
 
 
-
 # Mapping of base64 letter -> integer value.
 B64 = dict(
     (c, i) for i, c in
-    enumerate(u'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/')
+    enumerate(key_type('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'))
 )
