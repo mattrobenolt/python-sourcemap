@@ -51,6 +51,46 @@ class SourceMapDecoder(object):
         return values
 
     def decode(self, source):
+        """Decode a source map object into a SourceMapIndex.
+
+        The index is keyed on (dst_line, dst_column) for lookups,
+        and a per row index is kept to help calculate which Token to retrieve.
+
+        For example:
+            A minified source file has two rows and two tokens per row.
+
+            # All parsed tokens
+            tokens = [
+                Token(dst_row=0, dst_col=0),
+                Token(dst_row=0, dst_col=5),
+                Token(dst_row=1, dst_col=0),
+                Token(dst_row=1, dst_col=12),
+            ]
+
+            Two dimentional array of columns -> row
+            rows = [
+                [0, 5],
+                [0, 12],
+            ]
+
+            Token lookup, based on location
+            index = {
+                (0, 0):  tokens[0],
+                (0, 5):  tokens[1],
+                (1, 0):  tokens[2],
+                (1, 12): tokens[3],
+            }
+
+            To find the token at (1, 20):
+              - Check if there's a direct hit on the index (1, 20) => False
+              - Pull rows[1] => [0, 12]
+              - bisect_right to find the closest match:
+                  bisect_right([0, 12], 20) => 2
+              - Fetch the column number before, since we want the column
+                lte to the bisect_right: 2-1 => row[2-1] => 12
+              - At this point, we know the token location, (1, 12)
+              - Pull (1, 12) from index => tokens[3]
+        """
         # According to spec (https://docs.google.com/document/d/1U1RGAehQwRypUTovF1KRlpiOFze0b-_2gc6fAH0KY0k/edit#heading=h.h7yy76c5il9v)
         # A SouceMap may be prepended with ")]}'" to cause a Javascript error.
         # If the file starts with that string, ignore the entire first line.
@@ -68,7 +108,14 @@ class SourceMapDecoder(object):
             sources = ['%s/%s' % (sourceRoot, source) for source in sources]
 
         tokens = []
-        keys = []
+
+        # preallocate 2D array for idexing
+        # line_index is used to identify the closest column when looking up a token
+        line_index = [[]] * len(lines)
+
+        # Main index of all tokens
+        # The index is keyed on (line, column)
+        index = {}
 
         dst_col, src_id, src_line, src_col, name_id = 0, 0, 0, 0, 0
         for dst_line, line in enumerate(lines):
@@ -100,12 +147,16 @@ class SourceMapDecoder(object):
                 except AssertionError:
                     raise SourceMapDecodeError
 
-                # print dst_line, dst_col, src, src_line, src_col, name
-
                 token = Token(dst_line, dst_col, src, src_line, src_col, name)
                 tokens.append(token)
-                keys.append((dst_line, dst_col))
-        return SourceMapIndex(tokens, keys, sources)
+
+                # Insert into main index
+                index[(dst_line, dst_col)] = token
+
+                # Insert into specific line index
+                line_index[dst_line].append(dst_col)
+
+        return SourceMapIndex(tokens, line_index, index, sources)
 
 
 
