@@ -3,7 +3,7 @@ sourcemap.objects
 =================
 """
 from bisect import bisect_right
-from collections import namedtuple
+
 
 class Token(object):
     """A Token represents one JavaScript symbol.
@@ -43,6 +43,9 @@ class Token(object):
 
 
 class SourceMapIndex(object):
+    """The indexed sourcemap containing all the Tokens
+    and precomputed indexes for searching."""
+
     def __init__(self, tokens, line_index, index, sources):
         self.tokens = tokens
         self.line_index = line_index
@@ -76,4 +79,3 @@ class SourceMapIndex(object):
 
     def __repr__(self):
         return '<SourceMapIndex: %s>' % ', '.join(map(str, self.sources))
-

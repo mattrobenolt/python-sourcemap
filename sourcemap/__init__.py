@@ -7,13 +7,16 @@ from .exceptions import SourceMapDecodeError
 from .decoder import SourceMapDecoder
 
 def load(fp, cls=None):
+    "Parse a sourcemap from a file-like object"
     return loads(fp.read(), cls)
 
 def loads(source, cls=None):
+    "Parse a sourcemap from a string"
     cls = cls or SourceMapDecoder
     return cls().decode(source)
 
 def discover(source):
+    "Given a JavaScript file, find the sourceMappingURL line"
     source = source.splitlines()
     # Source maps are only going to exist at either the top or bottom of the document.
     # Technically, there isn't anything indicating *where* it should exist, so we

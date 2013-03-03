@@ -12,14 +12,10 @@ try:
 except ImportError:
     import json
 
-
 __all__ = ('SourceMapDecoder')
 
 
 class SourceMapDecoder(object):
-    def __init__(self):
-        pass
-
     def parse_vlq(self, segment):
         """
         Parse a string of VLQ-encoded data.
@@ -96,7 +92,7 @@ class SourceMapDecoder(object):
         # According to spec (https://docs.google.com/document/d/1U1RGAehQwRypUTovF1KRlpiOFze0b-_2gc6fAH0KY0k/edit#heading=h.h7yy76c5il9v)
         # A SouceMap may be prepended with ")]}'" to cause a Javascript error.
         # If the file starts with that string, ignore the entire first line.
-        if source[:4] == ")]}'":
+        if source[:3] == ')]}':
             source = source.split('\n', 1)[1]
 
         smap = json.loads(source)
@@ -112,7 +108,6 @@ class SourceMapDecoder(object):
         # List of all tokens
         tokens = []
 
-        # preallocate 2D array for indexing
         # line_index is used to identify the closest column when looking up a token
         line_index = []
 
@@ -122,6 +117,7 @@ class SourceMapDecoder(object):
 
         dst_col, src_id, src_line, src_col, name_id = 0, 0, 0, 0, 0
         for dst_line, line in enumerate(lines):
+            # Create list for columns in index
             line_index.append([])
 
             segments = line.split(',')
