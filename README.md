@@ -1,6 +1,7 @@
 # SourceMap
 Parse JavaScript source maps.
-<small>*Based on [https://github.com/martine/python-sourcemap](https://github.com/martine/python-sourcemap)*</small>
+
+*Based on [https://github.com/martine/python-sourcemap](https://github.com/martine/python-sourcemap)*
 
 ## Installation
 `$ pip install sourcemap`
