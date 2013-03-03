@@ -165,5 +165,5 @@ class SourceMapDecoder(object):
 # Mapping of base64 letter -> integer value.
 B64 = dict(
     (c, i) for i, c in
-    enumerate('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/')
+    enumerate(u'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/')
 )
