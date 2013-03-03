@@ -109,9 +109,9 @@ class SourceMapDecoder(object):
 
         tokens = []
 
-        # preallocate 2D array for idexing
+        # preallocate 2D array for indexing
         # line_index is used to identify the closest column when looking up a token
-        line_index = [[]] * len(lines)
+        line_index = [None] * len(lines)
 
         # Main index of all tokens
         # The index is keyed on (line, column)
@@ -119,6 +119,8 @@ class SourceMapDecoder(object):
 
         dst_col, src_id, src_line, src_col, name_id = 0, 0, 0, 0, 0
         for dst_line, line in enumerate(lines):
+            line_index[dst_line] = []
+
             segments = line.split(',')
             dst_col = 0
             for segment in segments:
