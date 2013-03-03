@@ -5,9 +5,7 @@ Parse JavaScript sourcemaps.
 >>> import sourcemap
 >>> sourcemap.discover('...')
 'jquery.min.map'
->>> map = sourcemap.loads('...')
->>> pointer = map.lookup(line=10, column=10)
-{'file': 'jquery.js', 'line': 500, 'column': 20}
->>> map.get_file(pointer)
-'The whole file...'
+>>> tokens = sourcemap.loads('...')
+>>> tokens.lookup(line=10, column=10)
+<Token: dst_line=10 dst_column=10 src='jquery.js' src_line=50 src_col=200 name='lol'>
 ```

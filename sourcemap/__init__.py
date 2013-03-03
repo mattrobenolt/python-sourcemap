@@ -2,14 +2,15 @@
 sourcemap
 =========
 """
-from .decoder import SourcemapDecoder
-from .objects import Sourcemap
+
+from .exceptions import SourceMapDecodeError
+from .decoder import SourceMapDecoder
 
 def load(fp, cls=None):
     return loads(fp.read(), cls)
 
 def loads(source, cls=None):
-    cls = cls or SourcemapDecoder
+    cls = cls or SourceMapDecoder
     return cls().decode(source)
 
 def discover(source):
