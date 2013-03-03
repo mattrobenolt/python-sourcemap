@@ -30,7 +30,7 @@ class SourceMapDecoder(object):
 
         cur, shift = 0, 0
         for c in segment:
-            val = B64[c]
+            val = B64[ord(c)]
             # Each character is 6 bits:
             # 5 of value and the high bit is the continuation.
             val, cont = val & 0b11111, val >> 5
@@ -44,6 +44,8 @@ class SourceMapDecoder(object):
                     cur = -cur
                 values.append(cur)
                 cur, shift = 0, 0
+            # obscure hack for pypy :(
+            del c
 
         if cur or shift:
             raise SourceMapDecodeError('leftover cur/shift in vlq decode')
@@ -164,6 +166,6 @@ class SourceMapDecoder(object):
 
 # Mapping of base64 letter -> integer value.
 B64 = dict(
-    (c, i) for i, c in
+    (ord(c), i) for i, c in
     enumerate(u'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/')
 )
