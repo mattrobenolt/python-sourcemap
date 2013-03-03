@@ -3,6 +3,8 @@ sourcemap.decoder
 =================
 """
 
+import os
+from functools import partial
 from .exceptions import SourceMapDecodeError
 from .objects import Token, SourceMapIndex
 try:
@@ -107,7 +109,7 @@ class SourceMapDecoder(object):
         lines = mappings.split(';')
 
         if sourceRoot is not None:
-            sources = ['%s/%s' % (sourceRoot, source) for source in sources]
+            sources = map(partial(os.path.join, sourceRoot), sources)
 
         tokens = []
 
