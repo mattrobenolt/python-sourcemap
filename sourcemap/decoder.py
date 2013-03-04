@@ -170,6 +170,6 @@ class SourceMapDecoder(object):
 
 # Mapping of base64 letter -> integer value.
 # This weird list is being allocated for faster lookups
-B64 = [None] * 123
+B64 = [-1] * 123
 for i, c in enumerate('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'):
     B64[ord(c)] = i
