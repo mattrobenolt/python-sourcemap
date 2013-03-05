@@ -56,3 +56,7 @@ class SourceMapIndexTestCase(unittest.TestCase):
         index, tokens = self.get_index()
         for idx, token in enumerate(index):
             assert token is tokens[idx]
+
+    def test_len(self):
+        index, tokens = self.get_index()
+        assert len(index) == len(tokens)

@@ -80,5 +80,8 @@ class SourceMapIndex(object):
     def __iter__(self):
         return iter(self.tokens)
 
+    def __len__(self):
+        return len(self.tokens)
+
     def __repr__(self):
         return '<SourceMapIndex: %s>' % ', '.join(map(str, self.sources))
