@@ -6,5 +6,5 @@ python:
  - "pypy"
 install: 
  - "pip install -e ."
- - "pip install unittest2 --use-mirrors"
+ - "python -c \"import sys, os; if sys.version_info < (2, 7): os.system('pip install unittest2')\""
 script: "python runtests.py"
