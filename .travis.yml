@@ -4,5 +4,7 @@ python:
  - "2.7"
  - "3.3"
  - "pypy"
-install: "pip install -e ."
+install: 
+ - "pip install -e ."
+ - "pip install unittest2 --use-mirrors"
 script: "python runtests.py"
