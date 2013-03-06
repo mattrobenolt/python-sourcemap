@@ -1,4 +1,4 @@
-# SourceMap
+# SourceMap [![Build Status](https://travis-ci.org/mattrobenolt/python-sourcemap.png?branch=master)](https://travis-ci.org/mattrobenolt/python-sourcemap)
 Parse JavaScript source maps.
 
 *Based on [https://github.com/martine/python-sourcemap](https://github.com/martine/python-sourcemap)*
@@ -35,3 +35,9 @@ Parse JavaScript source maps.
 # 5 lines after
 >>> post_context = source[token.src_line + 1:token.src_line + 6]
 ```
+
+### Compatibility
+ * Python 2.6
+ * Python 2.7
+ * Python 3.3
+ * PyPy
