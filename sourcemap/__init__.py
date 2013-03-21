@@ -8,6 +8,8 @@ sourcemap
 from .exceptions import SourceMapDecodeError  #NOQA
 from .decoder import SourceMapDecoder
 
+__version__ = '0.1.2'
+
 
 def load(fp, cls=None):
     "Parse a sourcemap from a file-like object"

@@ -59,5 +59,3 @@ class IntegrationTestCase(unittest.TestCase):
             end = start + len(token.name)
             substring = source_line[start:end]
             assert token.name == substring
-
-

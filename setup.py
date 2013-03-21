@@ -16,13 +16,17 @@ Parse JavaScript source maps.
 :license: BSD, see LICENSE for more details.
 """
 from setuptools import setup, find_packages
+import re
+
+# lol
+version = re.search(r'__version__ = \'([^\']+)\'', open('sourcemap/__init__.py').read(), re.MULTILINE).groups()[0]
 
 install_requires = []
 tests_require = []
 
 setup(
     name='sourcemap',
-    version='0.1.1',
+    version=version,
     author='Matt Robenolt',
     author_email='matt@ydekproductions.com',
     url='https://github.com/mattrobenolt/python-sourcemap',
