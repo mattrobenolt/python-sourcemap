@@ -49,7 +49,8 @@ class SourceMapIndex(object):
     """The indexed sourcemap containing all the Tokens
     and precomputed indexes for searching."""
 
-    def __init__(self, tokens, line_index, index, sources=None):
+    def __init__(self, raw, tokens, line_index, index, sources=None):
+        self.raw = raw
         self.tokens = tokens
         self.line_index = line_index
         self.index = index

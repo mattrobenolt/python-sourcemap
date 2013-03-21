@@ -3,6 +3,7 @@ try:
 except ImportError:
     import unittest
 import sourcemap
+import json
 
 
 class IntegrationTestCase(unittest.TestCase):
@@ -20,6 +21,7 @@ class IntegrationTestCase(unittest.TestCase):
         assert sourcemap.discover(minified) == 'jquery.min.map'
 
         index = sourcemap.loads(min_map)
+        assert index.raw == json.loads(min_map)
         for token in index:
             # Ignore tokens that are None.
             # There's no simple way to verify they're correct
@@ -47,6 +49,7 @@ class IntegrationTestCase(unittest.TestCase):
         assert sourcemap.discover(minified) == 'tests/fixtures/coolstuff.min.map'
 
         index = sourcemap.loads(min_map)
+        assert index.raw == json.loads(min_map)
         for token in index:
             if token.name is None:
                 continue

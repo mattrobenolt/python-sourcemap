@@ -165,7 +165,7 @@ class SourceMapDecoder(object):
                 # Insert into specific line index
                 line_index[dst_line].append(dst_col)
 
-        return SourceMapIndex(tokens, line_index, index, sources)
+        return SourceMapIndex(smap, tokens, line_index, index, sources)
 
 
 # Mapping of base64 letter -> integer value.

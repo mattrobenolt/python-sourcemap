@@ -32,7 +32,9 @@ class SourceMapIndexTestCase(unittest.TestCase):
             (1, 12): tokens[3],
         }
 
-        return SourceMapIndex(tokens, rows, index), tokens
+        raw = {}
+
+        return SourceMapIndex(raw, tokens, rows, index), tokens
 
     def test_lookup(self):
         index, tokens = self.get_index()
