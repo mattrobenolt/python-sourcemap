@@ -41,8 +41,8 @@ class Token(object):
         return True
 
     def __repr__(self):
-        args = self.dst_line, self.dst_col, self.src, self.src_line, self.src_col, self.name
-        return '<Token: dst_line=%d dst_col=%d src=%r src_line=%d src_col=%d name=%r>' % args
+        args = self.src, self.dst_line, self.dst_col, self.src_line, self.src_col, self.name
+        return '<Token: src=%r dst_line=%d dst_col=%d src_line=%d src_col=%d name=%r>' % args
 
 
 class SourceMapIndex(object):
