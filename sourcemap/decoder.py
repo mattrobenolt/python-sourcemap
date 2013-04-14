@@ -19,7 +19,7 @@ try:
 except ImportError:
     import json  #NOQA
 
-__all__ = ('SourceMapDecoder')
+__all__ = ('SourceMapDecoder',)
 
 
 class SourceMapDecoder(object):
