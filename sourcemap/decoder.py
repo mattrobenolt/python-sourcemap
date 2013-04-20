@@ -105,7 +105,7 @@ class SourceMapDecoder(object):
         smap = json.loads(source)
         sources = smap['sources']
         sourceRoot = smap.get('sourceRoot')
-        names = map(str, smap['names'])
+        names = list(map(str, smap['names']))
         mappings = smap['mappings']
         lines = mappings.split(';')
 
