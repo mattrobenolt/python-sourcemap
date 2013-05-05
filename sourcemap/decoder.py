@@ -138,14 +138,17 @@ class SourceMapDecoder(object):
                 src = None
                 name = None
                 if len(parse) > 1:
-                    src_id += parse[1]
-                    src = sources[src_id]
-                    src_line += parse[2]
-                    src_col += parse[3]
+                    try:
+                        src_id += parse[1]
+                        src = sources[src_id]
+                        src_line += parse[2]
+                        src_col += parse[3]
 
-                    if len(parse) > 4:
-                        name_id += parse[4]
-                        name = names[name_id]
+                        if len(parse) > 4:
+                            name_id += parse[4]
+                            name = names[name_id]
+                    except IndexError:
+                        raise SourceMapDecodeError
 
                 # lol for now
                 try:
