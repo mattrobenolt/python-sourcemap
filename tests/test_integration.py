@@ -59,3 +59,9 @@ class IntegrationTestCase(unittest.TestCase):
             end = start + len(token.name)
             substring = source_line[start:end]
             assert token.name == substring
+
+    def test_unicode_names(self):
+        _, _, min_map = self.get_fixtures('unicode')
+
+        # This shouldn't blow up
+        sourcemap.loads(min_map)

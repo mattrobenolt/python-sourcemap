@@ -11,6 +11,7 @@ Original source under Apache license, see:
 :license: BSD, see LICENSE for more details.
 """
 import os
+import sys
 from functools import partial
 from .exceptions import SourceMapDecodeError
 from .objects import Token, SourceMapIndex
@@ -20,6 +21,10 @@ except ImportError:
     import json  #NOQA
 
 __all__ = ('SourceMapDecoder',)
+
+# True if we are running on Python 3.
+PY3 = sys.version_info[0] == 3
+text_type = str if PY3 else unicode
 
 
 class SourceMapDecoder(object):
@@ -105,7 +110,7 @@ class SourceMapDecoder(object):
         smap = json.loads(source)
         sources = smap['sources']
         sourceRoot = smap.get('sourceRoot')
-        names = list(map(str, smap['names']))
+        names = list(map(text_type, smap['names']))
         mappings = smap['mappings']
         lines = mappings.split(';')
 
