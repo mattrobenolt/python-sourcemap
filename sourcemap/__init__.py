@@ -8,7 +8,7 @@ sourcemap
 from .exceptions import SourceMapDecodeError  #NOQA
 from .decoder import SourceMapDecoder
 
-__version__ = '0.1.6'
+__version__ = '0.1.7'
 
 
 def load(fp, cls=None):
