@@ -15,6 +15,15 @@ it's really awesome
 """
         self.assertFoundSourcemap(fixture, 'file.js')
 
+    def test_finds_sourcemap_alt(self):
+        fixture = """
+hey
+this is some code
+it's really awesome
+//# sourceMappingURL=file.js
+"""
+        self.assertFoundSourcemap(fixture, 'file.js')
+
     def test_doesnt_find_sourcemap(self):
         fixture = """
 there

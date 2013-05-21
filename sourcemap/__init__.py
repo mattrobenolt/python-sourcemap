@@ -35,8 +35,9 @@ def discover(source):
         possibilities = source
 
     for line in set(possibilities):
-        if line[:21] == '//@ sourceMappingURL=':
-            # We want everything AFTER the indicator, which is 21 chars long
+        pragma = line[:21]
+        if pragma == '//# sourceMappingURL=' or pragma == '//@ sourceMappingURL=':
+            # We want everything AFTER the pragma, which is 21 chars long
             return line[21:].rstrip()
     # XXX: Return None or raise an exception?
     return None
