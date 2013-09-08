@@ -18,7 +18,7 @@ from .objects import Token, SourceMapIndex
 try:
     import simplejson as json
 except ImportError:
-    import json  #NOQA
+    import json  # NOQA
 
 __all__ = ('SourceMapDecoder',)
 
