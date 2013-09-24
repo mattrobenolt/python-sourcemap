@@ -145,15 +145,30 @@ class SourceMapDecoder(object):
                 if len(parse) > 1:
                     try:
                         src_id += parse[1]
+                        if not 0 <= src_id < len(sources):
+                            raise SourceMapDecodeError(
+                                "Segment %s references source %d; there are "
+                                "%d sources" % (segment, src_id, len(sources))
+                            )
+
                         src = sources[src_id]
                         src_line += parse[2]
                         src_col += parse[3]
 
                         if len(parse) > 4:
                             name_id += parse[4]
+                            if not 0 <= name_id < len(names):
+                                raise SourceMapDecodeError(
+                                    "Segment %s references name %d; there are "
+                                    "%d names" % (segment, name_id, len(names))
+                                )
+
                             name = names[name_id]
                     except IndexError:
-                        raise SourceMapDecodeError
+                        raise SourceMapDecodeError(
+                            "Invalid segment %s, parsed as %r"
+                            % (segment, parse)
+                        )
 
                 try:
                     assert dst_line >= 0
