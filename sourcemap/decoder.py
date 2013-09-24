@@ -155,14 +155,21 @@ class SourceMapDecoder(object):
                     except IndexError:
                         raise SourceMapDecodeError
 
-                # lol for now
                 try:
                     assert dst_line >= 0
                     assert dst_col >= 0
                     assert src_line >= 0
                     assert src_col >= 0
                 except AssertionError:
-                    raise SourceMapDecodeError
+                    raise SourceMapDecodeError(
+                        "Segment %s has negative components:\n"
+                        "  Source file:   %s\n"
+                        "  Source line:   %s\n"
+                        "  Source column: %s\n"
+                        "  Mapped line:   %s\n"
+                        "  Mapped column: %s"
+                        % (segment, src, src_line, src_col, dst_line, dst_col)
+                    )
 
                 token = Token(dst_line, dst_col, src, src_line, src_col, name)
                 tokens.append(token)
