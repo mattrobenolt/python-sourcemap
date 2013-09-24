@@ -170,21 +170,13 @@ class SourceMapDecoder(object):
                             % (segment, parse)
                         )
 
-                try:
-                    assert dst_line >= 0
-                    assert dst_col >= 0
-                    assert src_line >= 0
-                    assert src_col >= 0
-                except AssertionError:
-                    raise SourceMapDecodeError(
-                        "Segment %s has negative components:\n"
-                        "  Source file:   %s\n"
-                        "  Source line:   %s\n"
-                        "  Source column: %s\n"
-                        "  Mapped line:   %s\n"
-                        "  Mapped column: %s"
-                        % (segment, src, src_line, src_col, dst_line, dst_col)
-                    )
+                locs = locals()
+                for var in 'dst_line', 'dst_col', 'src_line', 'src_col':
+                    if locs[var] < 0:
+                        raise SourceMapDecodeError(
+                            "Segment %s has negative %s (%d), in file %s"
+                            % (segment, var, locs[var], src)
+                        )
 
                 token = Token(dst_line, dst_col, src, src_line, src_col, name)
                 tokens.append(token)
