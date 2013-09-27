@@ -145,24 +145,38 @@ class SourceMapDecoder(object):
                 if len(parse) > 1:
                     try:
                         src_id += parse[1]
+                        if not 0 <= src_id < len(sources):
+                            raise SourceMapDecodeError(
+                                "Segment %s references source %d; there are "
+                                "%d sources" % (segment, src_id, len(sources))
+                            )
+
                         src = sources[src_id]
                         src_line += parse[2]
                         src_col += parse[3]
 
                         if len(parse) > 4:
                             name_id += parse[4]
+                            if not 0 <= name_id < len(names):
+                                raise SourceMapDecodeError(
+                                    "Segment %s references name %d; there are "
+                                    "%d names" % (segment, name_id, len(names))
+                                )
+
                             name = names[name_id]
                     except IndexError:
-                        raise SourceMapDecodeError
+                        raise SourceMapDecodeError(
+                            "Invalid segment %s, parsed as %r"
+                            % (segment, parse)
+                        )
 
-                # lol for now
-                try:
-                    assert dst_line >= 0
-                    assert dst_col >= 0
-                    assert src_line >= 0
-                    assert src_col >= 0
-                except AssertionError:
-                    raise SourceMapDecodeError
+                locs = locals()
+                for var in 'dst_line', 'dst_col', 'src_line', 'src_col':
+                    if locs[var] < 0:
+                        raise SourceMapDecodeError(
+                            "Segment %s has negative %s (%d), in file %s"
+                            % (segment, var, locs[var], src)
+                        )
 
                 token = Token(dst_line, dst_col, src, src_line, src_col, name)
                 tokens.append(token)
