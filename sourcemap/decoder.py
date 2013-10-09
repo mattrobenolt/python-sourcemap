@@ -104,7 +104,7 @@ class SourceMapDecoder(object):
         # According to spec (https://docs.google.com/document/d/1U1RGAehQwRypUTovF1KRlpiOFze0b-_2gc6fAH0KY0k/edit#heading=h.h7yy76c5il9v)
         # A SouceMap may be prepended with ")]}'" to cause a Javascript error.
         # If the file starts with that string, ignore the entire first line.
-        if source[:3] == ')]}':
+        if source[:4] == ")]}'":
             source = source.split('\n', 1)[1]
 
         smap = json.loads(source)
