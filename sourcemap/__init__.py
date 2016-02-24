@@ -5,7 +5,7 @@ sourcemap
 :copyright: (c) 2013 by Matt Robenolt
 :license: BSD, see LICENSE for more details.
 """
-from .exceptions import SourceMapDecodeError  #NOQA
+from .exceptions import SourceMapDecodeError  # NOQA
 from .decoder import SourceMapDecoder
 
 __version__ = '0.1.8'
