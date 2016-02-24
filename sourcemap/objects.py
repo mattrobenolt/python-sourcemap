@@ -37,8 +37,7 @@ class Token(object):
         return unicode(self.name)
 
     def __eq__(self, other):
-        keys = ('dst_line', 'dst_col', 'src', 'src_line', 'src_col', 'name')
-        for key in keys:
+        for key in self.__slots__:
             if getattr(self, key) != getattr(other, key):
                 return False
         return True
