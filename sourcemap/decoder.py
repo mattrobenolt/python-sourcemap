@@ -115,7 +115,8 @@ class SourceMapDecoder(object):
         lines = mappings.split(';')
 
         if sourceRoot is not None:
-            sources = map(partial(os.path.join, sourceRoot), sources)
+            # Python 3.x doesn't return a list type
+            sources = list(map(partial(os.path.join, sourceRoot), sources))
 
         # List of all tokens
         tokens = []
