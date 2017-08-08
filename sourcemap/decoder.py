@@ -22,9 +22,11 @@ except ImportError:
 
 __all__ = ('SourceMapDecoder',)
 
-# True if we are running on Python 3.
-PY3 = sys.version_info[0] == 3
-text_type = str if PY3 else unicode
+if sys.version_info[0] == 2:
+    from itertools import imap as map
+    text_type = unicode
+else:
+    text_type = str
 
 
 class SourceMapDecoder(object):
@@ -115,7 +117,7 @@ class SourceMapDecoder(object):
         lines = mappings.split(';')
 
         if sourceRoot is not None:
-            sources = map(partial(os.path.join, sourceRoot), sources)
+            sources = list(map(partial(os.path.join, sourceRoot), sources))
 
         # List of all tokens
         tokens = []
