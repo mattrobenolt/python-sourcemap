@@ -88,3 +88,25 @@ class SourceMapIndex(object):
 
     def __repr__(self):
         return '<SourceMapIndex: %s>' % ', '.join(map(str, self.sources))
+
+
+class SectionedSourceMapIndex(object):
+    """The index for a source map which contains sections
+    containing all the Tokens and precomputed indexes for
+    searching."""
+
+    def __init__(self, offsets, maps):
+        self.offsets = offsets
+        self.maps = maps
+
+    def lookup(self, line, column):
+        map_index = bisect_right(self.offsets, (line, column)) - 1
+        line_offset, col_offset = self.offsets[map_index]
+        col_offset = 0 if line != line_offset else col_offset
+        result = self.maps[map_index].lookup(line - line_offset, column - col_offset)
+        result.dst_line += line_offset
+        result.dst_col += col_offset
+        return result
+
+    def __repr__(self):
+        return '<SectionedSourceMapIndex: %s>' % ', '.join(map(str, self.maps))
