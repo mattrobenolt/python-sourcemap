@@ -142,7 +142,7 @@ class SourceMapDecoder(object):
                 offset = section.get('offset')
                 offsets.append((offset.get('line'), offset.get('column')))
                 maps.append(self._decode_map(section.get('map')))
-            return SectionedSourceMapIndex(offsets, maps)
+            return SectionedSourceMapIndex(smap, offsets, maps)
         else:
             return self._decode_map(smap)
 

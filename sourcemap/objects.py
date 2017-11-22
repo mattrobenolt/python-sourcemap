@@ -77,20 +77,29 @@ class SourceMapIndex(object):
         # Return from the main index, based on the (line, column) tuple
         return self.index[(line, column)], self
 
+    def columns_for_line(self, line):
+        return self.line_index[line]
+
+    def total_number_of_lines(self):
+        return len(self.line_index)
+
+    def files(self):
+        f = self.raw.get('file')
+        return [f] if f else None
+
     def sources_content_map(self):
         result = self._source_content_array()
-        if result:
-            return dict(result)
-        else:
-            return None
+        return dict(result) if result else None
+
+    def raw_sources(self):
+        return self.raw.get('sources')
 
     def _source_content_array(self):
         sources = self.raw.get('sources')
         content = self.raw.get('sourcesContent')
         if sources and content:
             return zip(sources, content)
-        else:
-            return None
+        return None
 
     def __getitem__(self, item):
         return self.tokens[item]
@@ -110,7 +119,8 @@ class SectionedSourceMapIndex(object):
     containing all the Tokens and precomputed indexes for
     searching."""
 
-    def __init__(self, offsets, maps):
+    def __init__(self, raw, offsets, maps):
+        self.raw = raw
         self.offsets = offsets
         self.maps = maps
 
@@ -124,6 +134,33 @@ class SectionedSourceMapIndex(object):
         result.dst_col += col_offset
         return result, smap
 
+    # TODO: Test this
+    def columns_for_line(self, line):
+        last_map_index = bisect_right(self.offsets, (line+1, 0)) - 1
+        first_map_index = bisect_right(self.offsets, (line, 0)) - 1
+        columns = []
+        for map_index in range(first_map_index, last_map_index + 1):
+            smap = self.maps[map_index]
+            line_offset, col_offset = self.offsets[map_index]
+            smap_line = line - line_offset
+            smap_cols = smap.columns_for_line(smap_line)
+            columns.extend([x + col_offset for x in smap_cols])
+        return columns
+
+    def total_number_of_lines(self):
+        result = 0
+        for smap in self.maps:
+            result += smap.total_number_of_lines()
+        return result
+
+    def files(self):
+        files = []
+        for smap in self.maps:
+            smap_files = smap.files()
+            if smap_files:
+                files.extend(smap_files)
+        return files if len(files) else None
+
     def sources_content_map(self):
         content_maps = []
         for m in self.maps:
@@ -132,8 +169,13 @@ class SectionedSourceMapIndex(object):
                 content_maps.extend(source_content_array)
         if len(content_maps):
             return dict(content_maps)
-        else:
-            return None
+        return None
+
+    def raw_sources(self):
+        sources = []
+        for m in self.maps:
+            sources.extend(m.raw_sources())
+        return sources
 
     def __repr__(self):
         return '<SectionedSourceMapIndex: %s>' % ', '.join(map(str, self.maps))
