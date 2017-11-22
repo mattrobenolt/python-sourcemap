@@ -129,17 +129,16 @@ class SectionedSourceMapIndex(object):
         line_offset, col_offset = self.offsets[map_index]
         col_offset = 0 if line != line_offset else col_offset
         smap = self.maps[map_index]
-        result = smap.lookup(line - line_offset, column - col_offset)
+        result, _ = smap.lookup(line - line_offset, column - col_offset)
         result.dst_line += line_offset
         result.dst_col += col_offset
         return result, smap
 
-    # TODO: Test this
     def columns_for_line(self, line):
-        last_map_index = bisect_right(self.offsets, (line+1, 0)) - 1
+        last_map_index = bisect_right(self.offsets, (line + 1, 0))
         first_map_index = bisect_right(self.offsets, (line, 0)) - 1
         columns = []
-        for map_index in range(first_map_index, last_map_index + 1):
+        for map_index in range(first_map_index, last_map_index):
             smap = self.maps[map_index]
             line_offset, col_offset = self.offsets[map_index]
             smap_line = line - line_offset
