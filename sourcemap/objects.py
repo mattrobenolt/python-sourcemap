@@ -61,7 +61,7 @@ class SourceMapIndex(object):
     def lookup(self, line, column):
         try:
             # Let's hope for a direct match first
-            return self.index[(line, column)]
+            return self.index[(line, column)], self
         except KeyError:
             pass
 
@@ -75,7 +75,22 @@ class SourceMapIndex(object):
         # We actually want the one less than current
         column = line_index[i - 1]
         # Return from the main index, based on the (line, column) tuple
-        return self.index[(line, column)]
+        return self.index[(line, column)], self
+
+    def sources_content_map(self):
+        result = self._source_content_array()
+        if result:
+            return dict(result)
+        else:
+            return None
+
+    def _source_content_array(self):
+        sources = self.raw.get('sources')
+        content = self.raw.get('sourcesContent')
+        if sources and content:
+            return zip(sources, content)
+        else:
+            return None
 
     def __getitem__(self, item):
         return self.tokens[item]
@@ -103,10 +118,22 @@ class SectionedSourceMapIndex(object):
         map_index = bisect_right(self.offsets, (line, column)) - 1
         line_offset, col_offset = self.offsets[map_index]
         col_offset = 0 if line != line_offset else col_offset
-        result = self.maps[map_index].lookup(line - line_offset, column - col_offset)
+        smap = self.maps[map_index]
+        result = smap.lookup(line - line_offset, column - col_offset)
         result.dst_line += line_offset
         result.dst_col += col_offset
-        return result
+        return result, smap
+
+    def sources_content_map(self):
+        content_maps = []
+        for m in self.maps:
+            source_content_array = m._source_content_array()
+            if source_content_array:
+                content_maps.extend(source_content_array)
+        if len(content_maps):
+            return dict(content_maps)
+        else:
+            return None
 
     def __repr__(self):
         return '<SectionedSourceMapIndex: %s>' % ', '.join(map(str, self.maps))
