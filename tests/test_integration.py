@@ -65,3 +65,9 @@ class IntegrationTestCase(unittest.TestCase):
 
         # This shouldn't blow up
         sourcemap.loads(min_map)
+
+    def test_control_characters(self):
+        _, _, min_map = self.get_fixtures('control_character')
+
+        # This shouldn't blow up
+        sourcemap.loads(min_map)
