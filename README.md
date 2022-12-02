@@ -1,7 +1,7 @@
 Rollbar Info
 ============
 
-This is a private clone of https://github.com/requests/requests-oauthlib
+This is a private clone of https://github.com/mattrobenolt/python-sourcemap
 so we can build package distributions from it pinned to the version we use.
 
 As of 2022-12-02, there should be a version on our Python private registry built and ready to use:
