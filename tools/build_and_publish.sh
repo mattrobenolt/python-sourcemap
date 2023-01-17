@@ -12,6 +12,6 @@ python setup.py sdist bdist_wheel
 
 # upload to registry
 twine upload \
-    --repository-url https://us-central1-python.pkg.dev/rollbar-prod/python-private-registry/ \
+    --repository-url https://pypi.rollbar.tools/rollbar/rollbar/ \
     --verbose \
     dist/*
