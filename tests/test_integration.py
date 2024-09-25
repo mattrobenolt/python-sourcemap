@@ -65,3 +65,13 @@ class IntegrationTestCase(unittest.TestCase):
 
         # This shouldn't blow up
         sourcemap.loads(min_map)
+
+    def test_invalid_map(self):
+        with self.assertRaises(
+            sourcemap.SourceMapDecodeError,
+            msg='Segment LCnBD has negative dst_col (-5), in file test-invalid2.js'
+        ):
+            sourcemap.loads(
+                '{"version":3,"lineCount":1,"mappings":"LCnBD;",'
+                '"sources":["test-invalid.js","test-invalid2.js"],"names":[]}'
+            )

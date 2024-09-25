@@ -215,9 +215,10 @@ class SourceMapDecoder(object):
                     assert src_line >= 0, ('src_line', src_line)
                     assert src_col >= 0, ('src_col', src_col)
                 except AssertionError as e:
+                    error_info = e.args[0]
                     raise SourceMapDecodeError(
                         "Segment %s has negative %s (%d), in file %s"
-                        % (segment, e.message[0], e.message[1], src)
+                        % (segment, error_info[0], error_info[1], src)
                     )
 
                 token = Token(dst_line, dst_col, src, src_line, src_col, name)
