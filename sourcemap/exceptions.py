@@ -9,6 +9,6 @@ class SourceMapDecodeError(ValueError):
     "lol sourcemap error"
     pass
 
-class SourceMapInvalidError(TypeError):
+class SourceMapTypeError(TypeError):
     "invalid sourcemap due to a type error"
     pass

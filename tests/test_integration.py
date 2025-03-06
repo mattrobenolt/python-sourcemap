@@ -75,3 +75,12 @@ class IntegrationTestCase(unittest.TestCase):
                 '{"version":3,"lineCount":1,"mappings":"LCnBD;",'
                 '"sources":["test-invalid.js","test-invalid2.js"],"names":[]}'
             )
+
+    def test_invalid_map_type_error(self):
+        with self.assertRaises(
+            sourcemap.exceptions.SourceMapTypeError,
+            msg='Sources must be a list of strings'
+        ):
+            sourcemap.loads(
+                '{"version":3,"sources":["1", "2", 3],"names":["x","alert"],"mappings":"AAAA,GAAIA,GAAI,EACR,IAAIA,GAAK,EAAG,CACVC,MAAM"}'
+            )
