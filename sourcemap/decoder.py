@@ -13,7 +13,7 @@ Original source under Apache license, see:
 import os
 import sys
 from functools import partial
-from .exceptions import SourceMapDecodeError
+from .exceptions import SourceMapDecodeError, SourceMapInvalidError
 from .objects import Token, SourceMapIndex, SectionedSourceMapIndex
 try:
     import simplejson as json
@@ -148,6 +148,9 @@ class SourceMapDecoder(object):
 
     def _decode_map(self, smap):
         sources = smap['sources']
+        if not all(isinstance(item, str) for item in sources):
+            raise SourceMapInvalidError("Sources must be a list of strings")
+
         sourceRoot = smap.get('sourceRoot')
         names = list(map(text_type, smap['names']))
         mappings = smap['mappings']
