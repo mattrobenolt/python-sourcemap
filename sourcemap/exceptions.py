@@ -8,3 +8,7 @@ sourcemap.exceptions
 class SourceMapDecodeError(ValueError):
     "lol sourcemap error"
     pass
+
+class SourceMapTypeError(TypeError):
+    "invalid sourcemap due to a type error"
+    pass
