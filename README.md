@@ -37,10 +37,9 @@ Parse JavaScript source maps.
 ```
 
 ### Compatibility
- * Python 2.6
- * Python 2.7
- * Python 3.3
- * Python 3.4
- * Python 3.5
- * PyPy
- * PyPy3
+ * Python 3.9
+ * Python 3.10
+ * Python 3.11
+ * Python 3.12
+ * Python 3.13
+ * PyPy 3.10
